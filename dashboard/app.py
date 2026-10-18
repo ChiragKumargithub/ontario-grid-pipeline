@@ -83,3 +83,21 @@ by_day = query("""
 """, year)
 st.line_chart(by_day, x="day", y="avg_demand_mw", color=COLOR,
               x_label="Date", y_label="Average demand (MW)")
+
+
+# ---- Chart 4: weekday vs weekend ----------------------------------------
+# ---- Chart 4: weekday vs weekend ----------------------------------------
+st.subheader("Weekends use less electricity, mostly during working hours")
+by_daytype = query("""
+    SELECT hour_ending AS hour,
+           round(avg(ontario_demand_mw)
+                 FILTER (WHERE dayofweek(date_est) NOT IN (0, 6))) AS Weekday,
+           round(avg(ontario_demand_mw)
+                 FILTER (WHERE dayofweek(date_est) IN (0, 6)))     AS Weekend
+    FROM {data}
+    GROUP BY 1 ORDER BY 1
+""", year)
+st.line_chart(by_daytype, x="hour", y=["Weekday", "Weekend"],
+              color=[COLOR, "#9AA0A6"],
+              x_label="Hour ending (Eastern Standard Time)",
+              y_label="Average demand (MW)")
