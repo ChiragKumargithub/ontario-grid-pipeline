@@ -48,6 +48,7 @@ def main() -> None:
     run_step("ingest", [sys.executable, "ingest.py"])
     run_step("load", [sys.executable, "load.py"])
     run_step("dbt build", [DBT, "build", "--project-dir", "dbt", "--profiles-dir", "dbt"])
+    run_step("export", [sys.executable, "export.py"])
     logging.info("===== Pipeline run finished successfully =====")
 
 
